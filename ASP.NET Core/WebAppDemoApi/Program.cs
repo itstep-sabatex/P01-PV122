@@ -1,3 +1,5 @@
+using WebAppDemoApi.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +8,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddSingleton<FileStoreService>(); // 1 обєкт на програму
+//builder.Services.AddScoped();    // 1 обєкт на сесію HHTP
+//builder.Services.AddTransient()  // 1 обєкт на звернення
 
 var app = builder.Build();
 

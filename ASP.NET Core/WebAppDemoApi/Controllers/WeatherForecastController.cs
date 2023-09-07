@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using WebAppDemoApi.Services;
 
 namespace WebAppDemoApi.Controllers
 {
@@ -12,12 +13,13 @@ namespace WebAppDemoApi.Controllers
     };
 
         private readonly ILogger<WeatherForecastController> _logger;
-
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        private readonly FileStoreService _fileStoreService;
+        public WeatherForecastController(ILogger<WeatherForecastController> logger,FileStoreService fileStoreService)
         {
             _logger = logger;
+            _fileStoreService = fileStoreService;
         }
-
+        // /weatherforecast/erer
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
@@ -29,5 +31,20 @@ namespace WebAppDemoApi.Controllers
             })
             .ToArray();
         }
+
+        [HttpGet("File")]
+        public string GetFile(string fileName)
+        {
+            return _fileStoreService.ReadFile(fileName);
+        }
+        
+        [HttpPost("File")]
+        public void PostFile(string fileName,string text)
+        {
+            _fileStoreService.SaveFile(fileName,text);
+        }
+
+
+
     }
 }
