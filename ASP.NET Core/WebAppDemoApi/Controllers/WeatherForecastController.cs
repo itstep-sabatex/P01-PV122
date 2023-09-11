@@ -33,8 +33,13 @@ namespace WebAppDemoApi.Controllers
         }
 
         [HttpGet("File")]
-        public string GetFile(string fileName)
+        public string GetFile([FromHeader]string? fileName)
         {
+            if (fileName == null)
+            {
+                return _fileStoreService.ReadFile("demo.txt");
+            }
+            else
             return _fileStoreService.ReadFile(fileName);
         }
         

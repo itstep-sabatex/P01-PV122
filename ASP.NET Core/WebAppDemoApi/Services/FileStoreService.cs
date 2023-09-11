@@ -10,6 +10,7 @@
         //}
         public string ReadFile(string filename) 
         {
+
             return File.ReadAllText($"{baseDirectory}{filename}");
         }
         public async Task<string> ReadFileAsync(string filename) 
