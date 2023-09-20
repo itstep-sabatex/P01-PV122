@@ -17,6 +17,8 @@ namespace WebAppDemoMVC.Controllers
 
         public IActionResult Index()
         {
+            ViewData["Title"] = "Home Page";
+            ViewData["MyDigit"] = 10;
             return View();
         }
 
