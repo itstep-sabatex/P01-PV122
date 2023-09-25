@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DemoClients;
 using WebAppDemoMVC.Data;
+using WebAppDemoMVC.Models;
 
 namespace WebAppDemoMVC.Controllers
 {
@@ -19,20 +20,47 @@ namespace WebAppDemoMVC.Controllers
             _context = context;
         }
 
-        // GET: Organizations
-        public async Task<IActionResult> Index()
+        // GET: Organizations (startwith,endwith,contains)
+        public async Task<IActionResult> Index(string? filter,DirectionSearch directionSearch,string fieldName="Name")
         {
             if (_context.Organizations != null)
-            {
-                var organizations = await _context.Organizations.ToListAsync(); 
-                var view = View(organizations);
+            {               
+                var model = new OrganizationIndexViewModel {Filter = filter ?? string.Empty, DirectionSearch = directionSearch,FieldName = fieldName};
+
+                foreach (var field in typeof(Organization).GetProperties())
+                {
+                    if (field.PropertyType == typeof(string))
+                        model.AvaliableFields.Add(field.Name);
+
+                }
+
+                 var query = _context.Organizations.AsQueryable();
+                if (filter != null)
+                {
+                    switch (directionSearch)
+                    {
+                        case DirectionSearch.StartWith:
+                            query = query.Where(s =>  typeof(Organization).GetProperty(fieldName).GetValue(s).ToString().StartsWith(filter));
+                            break;
+                        case DirectionSearch.EndWith:
+                             query = query.Where(s => s.Name.EndsWith(filter));
+                            break;
+                        case DirectionSearch.Contains:
+                            query = query.Where(s => s.Name.Contains(filter));
+                            break;
+
+                    }
+                }
+
+                model.Organizations = await query.ToListAsync();
+                var view = View(model);
                 return view;
             }
             return   Problem("Entity set 'ApplicationDbContext.Organizations'  is null.");
                             
         }
 
-        // GET: Organizations/Details/5
+        // GET: Organizations/Detail/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Organizations == null)

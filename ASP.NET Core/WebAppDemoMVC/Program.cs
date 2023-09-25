@@ -41,4 +41,4 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}"); //Home/Index.html /sutudents
 app.MapRazorPages();
 
-app.Run();
+app.Run(); // organizations
