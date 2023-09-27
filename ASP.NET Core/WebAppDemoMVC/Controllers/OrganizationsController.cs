@@ -89,10 +89,16 @@ namespace WebAppDemoMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,FullName")] Organization organization)
+        public async Task<IActionResult> Create(Organization organization)
         {
+            //Bind("Id,Name,FullName,Created")] 
             if (ModelState.IsValid)
             {
+                if (organization.Created<DateTime.Parse("01.01.2023") || organization.Created>DateTime.Parse("30.01.2023"))
+                {
+                    ModelState.AddModelError("Created","Data is invalid");
+                    return View(organization);
+                }
                 _context.Add(organization);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
