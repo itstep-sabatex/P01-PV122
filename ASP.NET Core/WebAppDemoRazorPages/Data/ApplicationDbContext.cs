@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using DemoClients;
 
 namespace WebAppDemoRazorPages.Data
 {
@@ -9,5 +10,7 @@ namespace WebAppDemoRazorPages.Data
             : base(options)
         {
         }
+        public DbSet<DemoClients.Organization>? Organizations { get; set; }
+        public DbSet<OrganizationUser>? OrganizationUsers { get; set; }
     }
 }
