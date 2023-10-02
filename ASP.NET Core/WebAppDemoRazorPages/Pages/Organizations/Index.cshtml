@@ -1,8 +1,10 @@
 ﻿@page
 @model WebAppDemoRazorPages.Pages.Organizations.IndexModel
+@using DemoClients
 
 @{
     ViewData["Title"] = "Index";
+    var sl = Html.GetEnumSelectList<DirectionSearch>();
 }
 
 <h1>Index</h1>
@@ -10,6 +12,13 @@
 <p>
     <a asp-page="Create">Create New</a>
 </p>
+<form asp-page-handler="filter">
+    <p>
+        Напрямок пошуку:@Html.DropDownListFor(f=>f.DirectionSearch,sl);
+        Name:<input type="text"  asp-for="Filter" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
 <table class="table">
     <thead>
         <tr>
