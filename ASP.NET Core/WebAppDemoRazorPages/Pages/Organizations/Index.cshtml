@@ -13,10 +13,8 @@
     <a asp-page="Create">Create New</a>
 </p>
 <form asp-page-handler="filter">
-    <p>
-        Напрямок пошуку:@Html.DropDownListFor(f=>f.DirectionSearch,sl);
-        Name:<input type="text"  asp-for="Filter" />
-        <input type="submit" value="Filter" />
+        Повнотекстовий пошук:<input type="text"  asp-for="Filter" />
+        <input type="submit" value="Застосувати" />
     </p>
 </form>
 <table class="table">
