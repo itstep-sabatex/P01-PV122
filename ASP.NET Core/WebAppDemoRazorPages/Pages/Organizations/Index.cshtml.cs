@@ -23,7 +23,7 @@ namespace WebAppDemoRazorPages.Pages.Organizations
         }
 
         public IList<Organization> Organization { get;set; } = default!;
-        [BindProperty]
+        [BindProperty()]
         public string Filter { get; set; }
         public async Task OnGetAsync()
         {
