@@ -8,16 +8,30 @@
     
 }
 
-<h1>Index</h1>
+<h1>Організації</h1>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-<form asp-page-handler="filter">
-        Повнотекстовий пошук:<input type="text"  asp-for="Filter" />
-        <input type="submit" value="Застосувати" />
-    </p>
-</form>
+<div class="row">
+    <div class="col-12 col-md-4">
+        <a asp-page="Create" class="btn btn-outline-primary d-md-inline-block d-flex justify-content-center" >Додати</a>
+    </div>
+    <div class="col-12 col-md-8">
+
+        <form asp-page-handler="filter">
+            <div class="row text-center">
+                <div class="col-12 col-md-4 d-flex align-items-center">
+                    Повнотекстовий пошук:
+                </div>
+                <div class="col-12 col-md-5 d-grid">
+                    <input type="text" asp-for="Filter" />
+                 </div>
+                <div class="col-12 col-md-3">
+                    <input type="submit" value="Застосувати" class="btn btn-outline-primary w-100 mt-2 mt-md-0" />
+                </div>
+            </div>
+        </form>
+       
+    </div>
+</div>
 <table class="table">
     <thead>
         <tr>
