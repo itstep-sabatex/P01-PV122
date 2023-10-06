@@ -72,5 +72,23 @@ namespace WebAppDemoRazorPages.Pages.Organizations
                 Organization = await query.ToListAsync();
             }
         }
+
+        public async Task OnPostDeleteAsync(int? id)
+        {
+            if (id == null || _context.Organizations == null)
+            {
+                return ;
+            }
+            var organization = await _context.Organizations.FindAsync(id);
+
+            if (organization != null)
+            {
+                
+                _context.Organizations.Remove(organization);
+                await _context.SaveChangesAsync();
+            }
+            Organization = await _context.Organizations.ToListAsync(); 
+        }
+
     }
 }
