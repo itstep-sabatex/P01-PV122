@@ -25,11 +25,25 @@ namespace WebAppDemoRazorPages.Pages.Organizations
         public IList<Organization> Organization { get;set; } = default!;
         [BindProperty()]
         public string Filter { get; set; }
+
+        public int PageSize { get; set; } = 2;
+        [BindProperty]
+        public int Skip { get; set; } = 0;
+
+        public int CountItems { get; set; }
+ 
+        async Task GetItems(IQueryable<Organization> query)
+        {
+            CountItems = await query.CountAsync();
+            Organization = await query.OrderBy(o=>o.Id).Skip(Skip).Take(PageSize).ToListAsync();
+        }
+
+
         public async Task OnGetAsync()
         {
             if (_context.Organizations != null)
             {
-                Organization = await _context.Organizations.ToListAsync();
+                await GetItems(_context.Organizations.AsQueryable());
             }
         }
  

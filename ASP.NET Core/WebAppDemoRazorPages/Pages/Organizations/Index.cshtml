@@ -75,6 +75,7 @@
                                 </div>
                                 <div class="modal-body">
                                     Буде видалено оганізацію @Html.DisplayFor(modelItem => item.Name)
+                                
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -91,3 +92,61 @@
 }
     </tbody>
 </table>
+@{
+    string previosState = Model.Skip == 0 ? "disabled" : "";
+}
+<nav aria-label="...">
+    <ul class="pagination">
+        @{
+            int pages = Model.CountItems / Model.PageSize + (Model.CountItems % Model.PageSize > 0 ? 1 : 0);
+            int curentPage = Model.Skip == 0 ? 1 : Model.CountItems / Model.Skip + Model.CountItems % Model.Skip > 0?1:0;
+
+
+            if (pages > 1)
+            {
+                if (curentPage == 1)
+                {
+                    <li class="page-item active">
+                        <span class="page-link">Previous</span>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-page="" asp-route-skip="@((curentPage-2)*Model.PageSize)">Previous</a>
+                    </li>
+                }
+
+
+                for (int i = 1; i < pages; i++)
+                {
+                    if (curentPage == i)
+                    {
+                        <li class="page-item active" aria-current="page">
+                            <span class="page-link">@i</span>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item"><a class="page-link" asp-page="" asp-route-skip="@((curentPage-1)*Model.PageSize)">@i</a></li>
+                    }
+                }
+
+                if (curentPage ==pages)
+                {
+                    <li class="page-item active">
+                        <span class="page-link">Next</span>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-page="" asp-route-skip="@(curentPage*Model.PageSize)">Next</a>
+                    </li>
+                }
+
+
+             }
+        }
+    </ul>
+</nav>
