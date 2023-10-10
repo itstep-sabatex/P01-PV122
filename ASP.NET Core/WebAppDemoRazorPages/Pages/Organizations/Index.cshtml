@@ -99,7 +99,7 @@
     <ul class="pagination">
         @{
             int pages = Model.CountItems / Model.PageSize + (Model.CountItems % Model.PageSize > 0 ? 1 : 0);
-            int curentPage = Model.Skip == 0 ? 1 : Model.CountItems / Model.Skip + Model.CountItems % Model.Skip > 0?1:0;
+            int curentPage = Model.Skip == 0 ? 1 : Model.Skip/Model.PageSize+1;
 
 
             if (pages > 1)
@@ -113,12 +113,12 @@
                 else
                 {
                     <li class="page-item">
-                        <a class="page-link" asp-page="" asp-route-skip="@((curentPage-2)*Model.PageSize)">Previous</a>
+                        <a class="page-link" asp-page="" asp-route-skip="@((curentPage-2)*Model.PageSize)" asp-route-filter="@Model.Filter">Previous</a>
                     </li>
                 }
 
 
-                for (int i = 1; i < pages; i++)
+                for (int i = 1; i <= pages; i++)
                 {
                     if (curentPage == i)
                     {
@@ -128,7 +128,7 @@
                     }
                     else
                     {
-                        <li class="page-item"><a class="page-link" asp-page="" asp-route-skip="@((curentPage-1)*Model.PageSize)">@i</a></li>
+                        <li class="page-item"><a class="page-link" asp-page="" asp-route-skip="@((i-1)*Model.PageSize)" asp-route-filter="@Model.Filter">@i</a></li>
                     }
                 }
 
@@ -141,7 +141,7 @@
                 else
                 {
                     <li class="page-item">
-                        <a class="page-link" asp-page="" asp-route-skip="@(curentPage*Model.PageSize)">Next</a>
+                        <a class="page-link" asp-page="" asp-route-skip="@(curentPage*Model.PageSize)" asp-route-filter="@Model.Filter">Next</a>
                     </li>
                 }
 

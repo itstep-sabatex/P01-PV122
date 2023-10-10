@@ -23,17 +23,49 @@ namespace WebAppDemoRazorPages.Pages.Organizations
         }
 
         public IList<Organization> Organization { get;set; } = default!;
-        [BindProperty()]
+        [BindProperty(SupportsGet = true)]
         public string Filter { get; set; }
 
         public int PageSize { get; set; } = 2;
-        [BindProperty]
+        [BindProperty(SupportsGet =true)]
         public int Skip { get; set; } = 0;
 
         public int CountItems { get; set; }
  
         async Task GetItems(IQueryable<Organization> query)
         {
+            var containsMethod = typeof(string).GetMethod("Contains", new Type[] { typeof(string) });
+            if (containsMethod == null) return;
+
+            var AvaliableFields = typeof(Organization).GetProperties().Where(p => p.PropertyType == typeof(string)).Select(s => s.Name).ToArray();
+
+
+            // Define the expression parameters
+            ParameterExpression parameter = Expression.Parameter(typeof(Organization), "entity");
+
+
+
+            if (Filter != null)
+            {
+                Expression? predicate = null;
+                foreach (var field in AvaliableFields)
+                {
+
+                    if (predicate == null)
+                    {
+                        predicate = Expression.Call(Expression.Property(parameter, field), containsMethod, Expression.Constant(Filter));
+                    }
+                    else
+                    {
+                        predicate = Expression.OrElse(predicate, Expression.Call(Expression.Property(parameter, field), containsMethod, Expression.Constant(Filter)));
+                    }
+                }
+
+                // Create the lambda expression
+                Expression<Func<Organization, bool>> lambda = Expression.Lambda<Func<Organization, bool>>(predicate, parameter);
+                query = query.Where(lambda);
+            }
+
             CountItems = await query.CountAsync();
             Organization = await query.OrderBy(o=>o.Id).Skip(Skip).Take(PageSize).ToListAsync();
         }
@@ -49,41 +81,12 @@ namespace WebAppDemoRazorPages.Pages.Organizations
  
         public async Task OnPostFilterAsync()
         {
-            var containsMethod =typeof(string).GetMethod("Contains", new Type[] { typeof(string) });
-            if (containsMethod == null) return;
             if (_context.Organizations != null)
             {
                 var query = _context.Organizations.AsQueryable(); 
                 // get string type property names
-                var AvaliableFields = typeof(Organization).GetProperties().Where(p => p.PropertyType == typeof(string)).Select(s => s.Name).ToArray();
+                await GetItems(query);
 
-
-                // Define the expression parameters
-                ParameterExpression parameter = Expression.Parameter(typeof(Organization), "entity");
- 
-                
-               
-                if (Filter != null)
-                {
-                    Expression? predicate = null;
-                    foreach (var field in AvaliableFields)
-                    {
- 
-                        if (predicate == null)
-                        {
-                            predicate = Expression.Call(Expression.Property(parameter, field),containsMethod, Expression.Constant(Filter));
-                        }
-                        else
-                        {
-                            predicate = Expression.OrElse(predicate, Expression.Call(Expression.Property(parameter, field), containsMethod, Expression.Constant(Filter)));
-                        }
-                    }
-
-                    // Create the lambda expression
-                    Expression<Func<Organization, bool>> lambda = Expression.Lambda<Func<Organization, bool>>(predicate, parameter);
-                    query = query.Where(lambda);
-                }
-                Organization = await query.ToListAsync();
             }
         }
 
@@ -101,7 +104,7 @@ namespace WebAppDemoRazorPages.Pages.Organizations
                 _context.Organizations.Remove(organization);
                 await _context.SaveChangesAsync();
             }
-            Organization = await _context.Organizations.ToListAsync(); 
+            await GetItems(_context.Organizations.AsQueryable()); 
         }
 
     }
