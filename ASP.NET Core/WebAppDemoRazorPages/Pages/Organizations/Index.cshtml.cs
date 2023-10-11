@@ -10,6 +10,7 @@ using WebAppDemoRazorPages.Data;
 using System.Linq.Expressions;
 using System.Xml;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
+using WebAppDemoRazorPages.Models;
 // route [namespace:Organizations]/[PageModel:Index]
 namespace WebAppDemoRazorPages.Pages.Organizations
 {
