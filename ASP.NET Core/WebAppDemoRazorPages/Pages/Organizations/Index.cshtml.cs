@@ -11,10 +11,11 @@ using System.Linq.Expressions;
 using System.Xml;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using WebAppDemoRazorPages.Models;
+using Bogus;
 // route [namespace:Organizations]/[PageModel:Index]
 namespace WebAppDemoRazorPages.Pages.Organizations
 {
-    public class IndexModel : PageModel
+    public class IndexModel : PageModel,IPaginated,IFirterable
     {
         private readonly WebAppDemoRazorPages.Data.ApplicationDbContext _context;
 
@@ -27,7 +28,7 @@ namespace WebAppDemoRazorPages.Pages.Organizations
         [BindProperty(SupportsGet = true)]
         public string Filter { get; set; }
 
-        public int PageSize { get; set; } = 2;
+        public int PageSize { get; set; } = 20;
         [BindProperty(SupportsGet =true)]
         public int Skip { get; set; } = 0;
 
@@ -106,6 +107,29 @@ namespace WebAppDemoRazorPages.Pages.Organizations
                 await _context.SaveChangesAsync();
             }
             await GetItems(_context.Organizations.AsQueryable()); 
+        }
+
+        public async Task OnPostRandomGenerateAsync()
+        {
+            if (_context.Organizations == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < 1; i++)
+            {
+                var organization = new Faker<Organization>()
+                    .Rules((f,o) =>
+                    {
+                        o.Name = f.Company.CompanyName();
+                        o.FullName = $"{o.Name} {f.Company.CompanySuffix()}";
+                        o.Created = f.Date.Between(new DateTime(1900, 1, 1), new DateTime(2023, 12, 31));
+                    }).Generate(1000);
+                await _context.AddRangeAsync(organization);
+                await _context.SaveChangesAsync();
+            }
+            
+            await GetItems(_context.Organizations.AsQueryable());
         }
 
     }

@@ -9,7 +9,13 @@
 }
 
 <h1>Організації</h1>
-
+<form asp-page-handler="RandomGenerate">
+    <div class="row text-center">
+        <div class="col-12 col-md-3">
+            <input type="submit" value="Генерувати" class="btn btn-outline-primary w-100 mt-2 mt-md-0" />
+        </div>
+    </div>
+</form>
 <div class="row">
     <div class="col-12 col-md-4">
         <a asp-page="Create" class="btn btn-outline-primary d-md-inline-block d-flex justify-content-center" >Додати</a>
@@ -92,61 +98,5 @@
 }
     </tbody>
 </table>
-@{
-    string previosState = Model.Skip == 0 ? "disabled" : "";
-}
-<nav aria-label="...">
-    <ul class="pagination">
-        @{
-            int pages = Model.CountItems / Model.PageSize + (Model.CountItems % Model.PageSize > 0 ? 1 : 0);
-            int curentPage = Model.Skip == 0 ? 1 : Model.Skip/Model.PageSize+1;
 
-
-            if (pages > 1)
-            {
-                if (curentPage == 1)
-                {
-                    <li class="page-item active">
-                        <span class="page-link">Previous</span>
-                    </li>
-                }
-                else
-                {
-                    <li class="page-item">
-                        <a class="page-link" asp-page="" asp-route-skip="@((curentPage-2)*Model.PageSize)" asp-route-filter="@Model.Filter">Previous</a>
-                    </li>
-                }
-
-
-                for (int i = 1; i <= pages; i++)
-                {
-                    if (curentPage == i)
-                    {
-                        <li class="page-item active" aria-current="page">
-                            <span class="page-link">@i</span>
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="page-item"><a class="page-link" asp-page="" asp-route-skip="@((i-1)*Model.PageSize)" asp-route-filter="@Model.Filter">@i</a></li>
-                    }
-                }
-
-                if (curentPage ==pages)
-                {
-                    <li class="page-item active">
-                        <span class="page-link">Next</span>
-                    </li>
-                }
-                else
-                {
-                    <li class="page-item">
-                        <a class="page-link" asp-page="" asp-route-skip="@(curentPage*Model.PageSize)" asp-route-filter="@Model.Filter">Next</a>
-                    </li>
-                }
-
-
-             }
-        }
-    </ul>
-</nav>
+@await Html.PartialAsync("_paginator",Model)

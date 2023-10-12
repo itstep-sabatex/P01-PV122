@@ -2,5 +2,85 @@
 @using Models
 @{
     IPaginated paginated = Model as IPaginated;
+    IFirterable firterable = Model as IFirterable;
+    if (paginated == null)
+    {
+        <div class="alert alert-danger align-self-center" role="alert">
+            Do not implentation Interface IPaginated for PageModel;
+        </div>
+    }
+    else
+    {
+         int pages = paginated.CountItems / paginated.PageSize + (paginated.CountItems % paginated.PageSize > 0 ? 1 : 0);
+         if (pages > 1)
+         {
+            int curentPage = paginated.Skip == 0 ? 1 : paginated.Skip / paginated.PageSize + 1;
+            string previosState = paginated.Skip == 0 ? "disabled" : "";
+            // show only five tabs
+            <nav aria-label="..." >
+                <ul class="pagination justify-content-center">
+                @{
+                    if (curentPage == 1)
+                {
+                    <li class="page-item disabled">
+                        <span class="page-link">First</span>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-page="" asp-route-skip="0" asp-route-filter="@firterable?.Filter">First</a>
+                            </li>
+                        }
 
+                        int start=0;
+                        if (pages > 9)
+                        {
+                            if (curentPage>5)
+                            {
+                                if (curentPage > pages - 5)
+                                    start = pages - 9;
+                                else
+                                    start = curentPage-5;
+                            }
+                        }
+
+
+                        for (int i = 1; i < 10; i++)
+                        {
+                            int pageNumber = i + start;
+                            if (curentPage == pageNumber)
+                            {
+                                <li class="page-item active" aria-current="page">
+                                    <span class="page-link">@pageNumber</span>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="page-item"><a class="page-link" asp-page="" asp-route-skip="@((pageNumber-1)*paginated.PageSize)" asp-route-filter="@firterable.Filter">@pageNumber</a></li>
+                            }
+                }
+
+                if (curentPage == pages)
+                {
+                    <li class="page-item disable">
+                        <span class="page-link">Last</span>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-page="" asp-route-skip="@((pages-1)*paginated.PageSize)" asp-route-filter="@firterable?.Filter">Last @pages</a>
+                    </li>
+                }
+                }
+                </ul>
+            </nav>
+        }
+    
+    }
 }
+
+
+
+
