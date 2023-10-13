@@ -6,6 +6,7 @@ namespace DemoClients
     {
         public int Id { get; set; } //128bit
         [Display(Name ="Імя")]
+
         public string Name { get; set; } = default!; // user frendly
 
         public string FullName { get; set; }= default!;

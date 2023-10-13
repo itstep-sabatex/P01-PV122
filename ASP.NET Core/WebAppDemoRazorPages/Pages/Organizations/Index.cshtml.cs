@@ -124,7 +124,7 @@ namespace WebAppDemoRazorPages.Pages.Organizations
                         o.Name = f.Company.CompanyName();
                         o.FullName = $"{o.Name} {f.Company.CompanySuffix()}";
                         o.Created = f.Date.Between(new DateTime(1900, 1, 1), new DateTime(2023, 12, 31));
-                    }).Generate(1000);
+                    }).Generate(100000);
                 await _context.AddRangeAsync(organization);
                 await _context.SaveChangesAsync();
             }
