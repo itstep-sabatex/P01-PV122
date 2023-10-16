@@ -1,0 +1,22 @@
+﻿@page "/ajaxDemo"
+@model WebAppDemoRazorPages.Pages.AJAXDemoModel
+<div id="mytable">
+
+</div>
+<button class="btn btn-primary" onclick="RefreshOrganizationTable('organizationTable')">Оновити</button>
+<button class="btn btn-primary" onclick="deleteItems('organizationTable')">Видалити</button>
+<table class="table ">
+<thead>
+    <tr>
+        <th>Назва</th>
+        <th>Повна назва</th>
+        <th>Дата запису</th>
+    </tr>
+</thead>
+<tbody id="organizationTable">
+
+</tbody>
+</table>
+
+@{
+}
