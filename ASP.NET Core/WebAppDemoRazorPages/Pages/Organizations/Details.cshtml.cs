@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using DemoClients;
 using WebAppDemoRazorPages.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebAppDemoRazorPages.Pages.Organizations
 {
+    [Authorize]
     public class DetailsModel : PageModel
     {
         private readonly WebAppDemoRazorPages.Data.ApplicationDbContext _context;

@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using DemoClients;
 using WebAppDemoRazorPages.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebAppDemoRazorPages.Pages.Organizations
 {
+    [Authorize]
     public class CreateModel : PageModel
     {
         private readonly WebAppDemoRazorPages.Data.ApplicationDbContext _context;

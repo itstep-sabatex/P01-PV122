@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DemoClients;
 using WebAppDemoRazorPages.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebAppDemoRazorPages.Pages.Organizations
 {
+    [Authorize]
     public class EditModel : PageModel
     {
         private readonly WebAppDemoRazorPages.Data.ApplicationDbContext _context;
