@@ -2,6 +2,58 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebAppDemoRazorPages.Data;
 
+const string defaultAdminName = "Administrator";
+async Task InitialDatabase(IServiceProvider host)
+{
+    using (var serviceScope = host.CreateScope())
+    {
+        var services = serviceScope.ServiceProvider;
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+        var userStore = services.GetRequiredService<IUserStore<IdentityUser>>();
+        var emailStorge = (IUserEmailStore<IdentityUser>)userStore;
+        var adminRole = await roleManager.FindByNameAsync(defaultAdminName);
+        const string adminUser = "admin@myhost.com";
+        const string adminPass = "Ss1234567890-";
+
+        if (adminRole ==  null)
+        {
+            var adminR = await roleManager.CreateAsync(new IdentityRole(defaultAdminName));
+            if (adminR.Succeeded == false) { throw new Exception("Error create Administrator role"); }
+            adminRole = await roleManager.FindByNameAsync(defaultAdminName);
+        }
+
+        var userAdmin = await userManager.FindByNameAsync(adminUser);
+        if (userAdmin == null)
+        {
+            var user = Activator.CreateInstance<IdentityUser>();
+            await userStore.SetUserNameAsync(user, adminUser,CancellationToken.None);
+            await emailStorge.SetEmailAsync(user,adminUser,CancellationToken.None);
+            var result = await userManager.CreateAsync(user, adminPass);
+            if (!result.Succeeded)
+            {
+                throw new Exception($"Error create user {adminUser} with password {adminPass}");
+            }
+            var userId = await userManager.GetUserIdAsync(user);
+            var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
+            var resultConfirm = await userManager.ConfirmEmailAsync(user, code);
+            if (!resultConfirm.Succeeded)
+            {
+                throw new Exception("");
+            }
+            userAdmin = await userManager.FindByNameAsync(adminUser);
+
+        }
+
+        if (!await userManager.IsInRoleAsync(userAdmin, defaultAdminName))
+        {
+            await userManager.AddToRoleAsync(userAdmin, defaultAdminName);
+        }
+    
+    }
+
+}
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -11,6 +63,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddRazorPages();
 
@@ -54,4 +107,9 @@ app.Use(async (context, next) =>
     var i = 10;
 
 });
+
+if (app.Environment.IsDevelopment())
+{
+    await InitialDatabase(app.Services);
+}
 app.Run();

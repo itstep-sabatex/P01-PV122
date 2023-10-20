@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Authorization;
 // route [namespace:Organizations]/[PageModel:Index]
 namespace WebAppDemoRazorPages.Pages.Organizations
 {
-    [Authorize]
+    [Authorize(Roles = "Administrator")]
     public class IndexModel : PageModel,IPaginated,IFirterable
     {
         private readonly WebAppDemoRazorPages.Data.ApplicationDbContext _context;
@@ -97,6 +97,7 @@ namespace WebAppDemoRazorPages.Pages.Organizations
 
         public async Task OnPostDeleteAsync(int? id)
         {
+
             if (id == null || _context.Organizations == null)
             {
                 return ;
