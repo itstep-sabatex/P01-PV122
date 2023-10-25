@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using WebAppDemoRazorPages.Data;
 
 const string defaultAdminName = "Administrator";
+const string defaultRoleManagerName = "Manager";
+const string defaultRoleUserName = "User";
+const string defaultRoleGestName = "Guest"; // додається автоматично при самостійній реэстрації користувача
 async Task InitialDatabase(IServiceProvider host)
 {
     using (var serviceScope = host.CreateScope())
@@ -12,10 +15,11 @@ async Task InitialDatabase(IServiceProvider host)
         var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
         var userStore = services.GetRequiredService<IUserStore<IdentityUser>>();
         var emailStorge = (IUserEmailStore<IdentityUser>)userStore;
-        var adminRole = await roleManager.FindByNameAsync(defaultAdminName);
+        
         const string adminUser = "admin@myhost.com";
         const string adminPass = "Ss1234567890-";
 
+var adminRole = await roleManager.FindByNameAsync(defaultAdminName);
         if (adminRole ==  null)
         {
             var adminR = await roleManager.CreateAsync(new IdentityRole(defaultAdminName));
@@ -48,6 +52,7 @@ async Task InitialDatabase(IServiceProvider host)
         if (!await userManager.IsInRoleAsync(userAdmin, defaultAdminName))
         {
             await userManager.AddToRoleAsync(userAdmin, defaultAdminName);
+            
         }
     
     }

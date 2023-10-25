@@ -13,12 +13,16 @@ using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using WebAppDemoRazorPages.Models;
 using Bogus;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Components;
 // route [namespace:Organizations]/[PageModel:Index]
 namespace WebAppDemoRazorPages.Pages.Organizations
 {
     [Authorize(Roles = "Administrator")]
     public class IndexModel : PageModel,IPaginated,IFirterable
     {
+
+
         private readonly WebAppDemoRazorPages.Data.ApplicationDbContext _context;
 
         public IndexModel(WebAppDemoRazorPages.Data.ApplicationDbContext context)
