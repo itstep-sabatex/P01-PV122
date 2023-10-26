@@ -31,6 +31,7 @@ var adminRole = await roleManager.FindByNameAsync(defaultAdminName);
         if (userAdmin == null)
         {
             var user = Activator.CreateInstance<IdentityUser>();
+
             await userStore.SetUserNameAsync(user, adminUser,CancellationToken.None);
             await emailStorge.SetEmailAsync(user,adminUser,CancellationToken.None);
             var result = await userManager.CreateAsync(user, adminPass);
