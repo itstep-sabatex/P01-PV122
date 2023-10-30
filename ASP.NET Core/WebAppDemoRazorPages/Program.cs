@@ -1,6 +1,9 @@
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using WebAppDemoRazorPages.Data;
 using WebAppDemoRazorPages.Services;
 
@@ -77,8 +80,21 @@ builder.Services.AddAuthentication().AddMicrosoftAccount(options => {
     options.ClientId = builder.Configuration["Authentication:Microsoft:ClientId"];
     options.ClientSecret = builder.Configuration["Authentication:Microsoft:ClientSecret"];
 });
-builder.Services.AddRazorPages();
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+builder.Services.AddRazorPages().AddViewLocalization(); //uk-UA
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportedCultures = new[] { new CultureInfo("en-US"), new CultureInfo("uk-UA") };
+    options.DefaultRequestCulture = new RequestCulture(culture: "en-US", uiCulture: "en-US");
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
+    //
+});
+    
+    
 builder.Services.AddScoped<IEmailSender, MailSender>();
+
+
 
 var app = builder.Build();
 
@@ -101,6 +117,12 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseRequestLocalization(new RequestLocalizationOptions()
+{ ApplyCurrentCultureToResponseHeaders = true }
+.AddSupportedCultures(new[] { "en-US", "uk-UA" })
+.AddSupportedUICultures(new[] { "en-US", "uk-UA" })
+.SetDefaultCulture("en-US"));
 
 app.MapRazorPages();
 app.MapControllers();

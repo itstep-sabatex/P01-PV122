@@ -14,7 +14,7 @@ namespace WebAppDemoRazorPages.Services
         }
         public async Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
-            //var pass = _configuration.GetSection("");
+            var pass = "";// _configuration.GetSection("");
             var login = "login";
             var smtpClient = new SmtpClient()
             {
