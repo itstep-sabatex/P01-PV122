@@ -116,7 +116,7 @@ namespace WebAppDemoRazorPages.Pages.Organizations
             }
             await GetItems(_context.Organizations.AsQueryable()); 
         }
-        [Authorize(Roles ="Administrator,Manager")]
+
         public async Task OnPostRandomGenerateAsync()
         {
             

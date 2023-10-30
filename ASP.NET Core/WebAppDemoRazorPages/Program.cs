@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using WebAppDemoRazorPages.Data;
+using WebAppDemoRazorPages.Services;
 
 const string defaultAdminName = "Administrator";
 const string defaultRoleManagerName = "Manager";
@@ -71,7 +73,12 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddAuthentication().AddMicrosoftAccount(options => {
+    options.ClientId = builder.Configuration["Authentication:Microsoft:ClientId"];
+    options.ClientSecret = builder.Configuration["Authentication:Microsoft:ClientSecret"];
+});
 builder.Services.AddRazorPages();
+builder.Services.AddScoped<IEmailSender, MailSender>();
 
 var app = builder.Build();
 
