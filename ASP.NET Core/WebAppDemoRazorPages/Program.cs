@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
+using WebAppDemoRazorPages;
 using WebAppDemoRazorPages.Data;
 using WebAppDemoRazorPages.Services;
 
@@ -81,7 +82,7 @@ builder.Services.AddAuthentication().AddMicrosoftAccount(options => {
     options.ClientSecret = builder.Configuration["Authentication:Microsoft:ClientSecret"];
 });
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
-builder.Services.AddRazorPages().AddViewLocalization(); //uk-UA
+builder.Services.AddRazorPages().AddDataAnnotationsLocalization(options => { options.DataAnnotationLocalizerProvider = (type, factory) => factory.Create(typeof(DataAnotationSharedResourcece)); }).AddViewLocalization(); //uk-UA
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
     var supportedCultures = new[] { new CultureInfo("en-US"), new CultureInfo("uk-UA") };
