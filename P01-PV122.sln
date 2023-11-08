@@ -23,6 +23,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrganizationManager", "Orga
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebClientDemo", "WebClientDemo\WebClientDemo.csproj", "{A7F2A7F3-B124-49E3-922F-05013A308050}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SystemProg", "SystemProg", "{1A5112E2-1B64-40DA-A499-A3931D604A12}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProcessDemo", "SystemProg\ProcessDemo\ProcessDemo.csproj", "{EBE7C77D-347F-41E0-BFF4-30911C01E7EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,9 +73,16 @@ Global
 		{A7F2A7F3-B124-49E3-922F-05013A308050}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7F2A7F3-B124-49E3-922F-05013A308050}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7F2A7F3-B124-49E3-922F-05013A308050}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBE7C77D-347F-41E0-BFF4-30911C01E7EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBE7C77D-347F-41E0-BFF4-30911C01E7EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBE7C77D-347F-41E0-BFF4-30911C01E7EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBE7C77D-347F-41E0-BFF4-30911C01E7EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EBE7C77D-347F-41E0-BFF4-30911C01E7EB} = {1A5112E2-1B64-40DA-A499-A3931D604A12}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D3FAB0D3-C0B8-4818-A3C0-1903F12B1C27}
