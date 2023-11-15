@@ -29,7 +29,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProcessDemo", "SystemProg\P
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DLLImportDemo", "DLLImportDemo\DLLImportDemo.csproj", "{519217DB-EADE-4078-BDF3-488D59077377}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThreadDemo", "ThreadDemo\ThreadDemo.csproj", "{BAD409AD-0684-4252-9EED-2980BE2A3694}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThreadDemo", "ThreadDemo\ThreadDemo.csproj", "{BAD409AD-0684-4252-9EED-2980BE2A3694}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitorDemo", "MonitorDemo\MonitorDemo.csproj", "{4BEFCD6B-CA4A-4AF4-B764-E2425015A227}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,6 +91,10 @@ Global
 		{BAD409AD-0684-4252-9EED-2980BE2A3694}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BAD409AD-0684-4252-9EED-2980BE2A3694}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BAD409AD-0684-4252-9EED-2980BE2A3694}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BEFCD6B-CA4A-4AF4-B764-E2425015A227}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BEFCD6B-CA4A-4AF4-B764-E2425015A227}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BEFCD6B-CA4A-4AF4-B764-E2425015A227}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BEFCD6B-CA4A-4AF4-B764-E2425015A227}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -97,6 +103,7 @@ Global
 		{EBE7C77D-347F-41E0-BFF4-30911C01E7EB} = {1A5112E2-1B64-40DA-A499-A3931D604A12}
 		{519217DB-EADE-4078-BDF3-488D59077377} = {1A5112E2-1B64-40DA-A499-A3931D604A12}
 		{BAD409AD-0684-4252-9EED-2980BE2A3694} = {1A5112E2-1B64-40DA-A499-A3931D604A12}
+		{4BEFCD6B-CA4A-4AF4-B764-E2425015A227} = {1A5112E2-1B64-40DA-A499-A3931D604A12}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D3FAB0D3-C0B8-4818-A3C0-1903F12B1C27}
