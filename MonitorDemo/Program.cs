@@ -9,16 +9,50 @@ void Increment(string threadName)
     lock (locked)
     {
         a++;
-        Console.WriteLine($"{threadName} a={a}");
+        //Console.WriteLine($"{threadName} a={a}");
     }
     
 }
+void IncrementWithMonitor(string threadName)
+{
+    Monitor.Enter(locked);
+    {
 
+    }
+
+    if (Monitor.TryEnter(locked, 1500))
+    {
+        a++;
+        Thread.Sleep(1000);
+        Console.WriteLine($"{threadName} a={a}");
+    }
+    else
+    {
+        Console.WriteLine($"{threadName} a={a} not enter to critical section!");
+    }
+
+}
+//Task.Run(() =>
+//{
+//    for (int i = 0; i < 10; i++)
+//    {
+//            Increment("Task1");
+//    }
+//});
+
+//Task.Run(() =>
+//{
+//    for (int i = 0; i < 10; i++)
+//    {
+//            Increment("Task2");
+
+//    }
+//});
 Task.Run(() =>
 {
     for (int i = 0; i < 10; i++)
     {
-            Increment("Task1");
+        IncrementWithMonitor("Task1");
     }
 });
 
@@ -26,9 +60,8 @@ Task.Run(() =>
 {
     for (int i = 0; i < 10; i++)
     {
-            Increment("Task2");
-       
+        IncrementWithMonitor("Task2");
+
     }
 });
-
-Thread.Sleep(5000);
+Thread.Sleep(10000);
